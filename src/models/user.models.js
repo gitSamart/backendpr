@@ -26,7 +26,7 @@ const userSchema = new Schema(
             trim: true,
             index: true
         },
-        fullname: {
+        avatar: {
             type: String,
             // cloudinary url 
             required: true,
@@ -58,7 +58,7 @@ userSchema.pre("save", async function (next) {
         return next();
     }
 
-    this.password = bcrypt.hash(this.password, 10)
+    this.password = await bcrypt.hash(this.password, 10)
     next(); 
 })
 
@@ -67,7 +67,7 @@ userSchema.methods.isPasswordCorrect = async function (password) {
     // (password, encrypted password)
 }
 
-userSchema.methods.generateAcessToken = function () {
+userSchema.methods.generateAccessToken = function () {
     return jwt.sign(
         {
              _id: this._id,
